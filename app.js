@@ -10,7 +10,11 @@ let listContainer = document.querySelector("#purple-list");
 let btnAddItem = document.querySelector(".addItemButton");
 
 let btnMarkCheck = document.querySelector(".check-btn");
-let btnFilterCheck = document.querySelector(".filter-button");
+let btnFilterAlphabetical = document.querySelector(".filter-button");
+let btnFilterCheck = document.querySelector(".checked-button");
+let btnEdit = document.querySelector(".edit-button");
+
+let originalItems=[];
 
 
 //functions
@@ -75,7 +79,7 @@ function createCard(text) {
 
   li.innerHTML = `
      <p class="item">${text}</p>
-          <button class="check-btn">Mark as checked</button><button class="up">Up</button><button class="down">Down</button><button class="remove">Remove</button>
+          <button class="check-btn">Mark as checked</button><button class="up">Up</button><button class="down">Down</button><button class="edit-button">Edit</button><button class="remove">Remove</button>
 `;
 
   return li;
@@ -128,7 +132,7 @@ btnAddItem.addEventListener("click", () => {
 //list actions validari
 listContainer.addEventListener("click", (ev)=>{
   let obj=ev.target;        // the button being pressed -- the event
-  let li=obj.parentNode;    // the list item <li> that contains the text and the <button> elements. -- <li> is the parentNode of the button element(node)
+  let li=obj.parentNode;    // the list item <li> that contains the <p> text and the <button> elements. -- <li> is the parentNode of the button element(node)
     if(obj.classList.contains("up")){
       let prev=li.previousElementSibling;
       listContainer.insertBefore(li,prev);
@@ -141,7 +145,58 @@ listContainer.addEventListener("click", (ev)=>{
     if(obj.classList.contains("remove")){
       listContainer.removeChild(li);
     }
-})
+});
+
+listContainer.addEventListener("click", (ev) =>{
+  if (ev.target.classList.contains("edit-button")) {
+  let obj=ev.target;
+  let parentElement = obj.parentNode;               // <li> element 
+  let parItem=parentElement.querySelector(".item");
+
+  if(! (obj.classList.contains("save-button")) ){
+
+    obj.classList.add("save-button");
+    obj.textContent="SAVE Changes";
+
+  let editableElement = document.createElement("input");
+  editableElement.classList.add("editable");
+  editableElement.setAttribute("type", "text");
+  editableElement.setAttribute("value", parItem.textContent);
+
+  textboxElement = parentElement.appendChild(editableElement);    //remove this -- explanation needed
+  parItem.replaceWith(textboxElement);
+
+  }else{
+    obj.classList.toggle("save-button");
+    obj.textContent="Edit";
+
+    console.log(parentElement.children);
+    console.log(textboxElement);    //--- error - not defined
+
+    let savedElement = document.createElement("p");
+    savedElement.classList.add("saved-element", "item");
+    savedElement.textContent=(textboxElement.value);
+
+    parentElement.appendChild(savedElement);
+    textboxElement.replaceWith(savedElement);
+
+    console.log(savedElement);
+
+    }
+  }
+  
+
+});
+
+
+//create an input once edit is clicked
+// enter the text in the input box
+// remove.child input box
+
+//edit --> textbox.createlement --> textbox.append --> 
+// element p.replaceWith(textbox) & remove li.child --> input text --> 'save changes' -->
+// -->  new.createElement
+// textbox.replaceWith(new); parentNode.appendChild(new)
 
 
 
@@ -165,10 +220,17 @@ document.getElementById("purple-list").addEventListener("click", (ev) => {
 
 
 
-btnFilterAlphabetical.addEventListener("click", () => {
+btnFilterAlphabetical.addEventListener("click",()=>{
 
   listContainer = document.getElementById("purple-list");
-  items = Array.from(listContainer.children);
+  
+
+  if(! (listContainer.classList.contains("filtered-list") )){
+    listContainer.classList.add("filtered-list");
+
+    originalItems = Array.from(listContainer.children); //stores original order 
+
+    items = Array.from(listContainer.children); // stores the sorted elements
 
   for(let i=0; i<items.length-1; i++){
     for(let j=i+1; j<items.length; j++){
@@ -181,13 +243,76 @@ btnFilterAlphabetical.addEventListener("click", () => {
         let aux = items[i];
         items[i] = items[j];
         items[j] = aux;
+        }
       }
     }
+
+    for(let i=0; i<items.length; i++){
+    listContainer.appendChild(items[i]);
+    }
+
+
+  }else{
+    listContainer.classList.remove("filtered-list");
+    for(let i=0; i<originalItems.length; i++){
+      listContainer.appendChild(originalItems[i]); //must be inside the loop
+    }
+
+    
   }
 
-  for(let i=0; i<items.length; i++){
-    listContainer.appendChild(items[i]);
-  }
+  
 });
 
 
+btnFilterCheck.addEventListener("click", () =>{
+  listContainer = document.getElementById("purple-list");
+  elements = Array.from(listContainer.children);
+
+  if(! (btnFilterCheck.getAttribute("id") === "checked-button") ){
+    btnFilterCheck.setAttribute("id", "checked-button");
+    btnFilterCheck.textContent="see all items"; 
+
+    for(let i=0; i<elements.length; i++){
+      
+      if(elements[i].classList.contains("unchecked")){
+        elements[i].classList.add("hide");
+      }
+    }
+  }
+  else{
+    for(let i=0; i<elements.length; i++){
+      
+      if(elements[i].classList.contains("unchecked")){
+        elements[i].classList.toggle("hide");
+      }
+    }
+    btnFilterCheck.removeAttribute("id");
+    btnFilterCheck.textContent="checked items"
+  }
+  
+
+});
+
+
+//todo add filters and sorting buttons 
+//editare
+//checked si unchecked
+// element is 'checked' --> css style: line-through text.
+
+//add a function for checked || uncheck --- toggle .checked class
+//add a func to sort 'checked' items
+//add a func to sort 'unchecked' items
+
+
+
+//text is required -- sa apara sub textbox
+
+// .classList.add("") --- adds a class to the element's class list.
+// element.classList.toggle(""); ---  adds or removes a class from an element
+
+// event listener |
+
+
+//// ad edit button
+// add  -- .setAttribute ('id', 'value');
