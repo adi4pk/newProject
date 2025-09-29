@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css" ;>
+</head>
+
+<body>
+  <h1 id="myHeading">JavaScript and the DOM</h1>
+  <p>Making a web page interactive</p>
+  <button id="toggleList">Hide list</button>
+  <div class="list">
+    <p class="description" id="desc-title">Things that are purple:</p>
+    <input type="text" class="description" id="input-box">
+    <button class="description" id="change-list-desc">Change list description</button>
+    <button class="filter-button">Filter By: alphabetical order</button>
+    <ul id="purple-list">
+      <li class="unchecked element">
+        <p class="item">gfgf</p>
+        <button class="check-btn">Mark as checked</button><button class="up">Up</button><button class="down">Down</button><button class="remove">Remove</button>
+      </li>
+      <li class="unchecked element">
+        <p class="item">test</p>
+        <button class="check-btn">Mark as checked</button><button class="up">Up</button><button class="down">Down</button><button class="remove">Remove</button>
+      </li>
+      <li class="unchecked element">
+        <p class="item">test3</p>
+        <button class="check-btn">Mark as checked</button><button class="up">Up</button><button class="down">Down</button><button class="remove">Remove</button>
+      </li>
+      <li class="unchecked element">
+        <p class="item">test4</p>
+        <button class="check-btn">Mark as checked</button><button class="up">Up</button><button class="down">Down</button><button class="remove">Remove</button>
+      </li>
+      <li class="unchecked element">
+        <p class="item">test5</p>
+        <button class="check-btn">Mark as checked</button><button class="up">Up</button><button class="down">Down</button><button class="remove">Remove</button>
+      </li>
+    </ul>
+    <input type="text" class="addItemInput">
+    <button class="addItemButton">Add item</button>
+  </div>
+
+  <script src="app.js"></script>
+
+
+</body>
+
+</html>
